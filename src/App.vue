@@ -1,10 +1,12 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/">每日推荐</router-link> |
+      <router-link to="/homeHot">热歌榜</router-link> | 
+      <router-link to="/homeSearch">搜索</router-link>
     </div>
     <router-view />
+    <audio src="" controls></audio>
   </div>
 </template>
 
