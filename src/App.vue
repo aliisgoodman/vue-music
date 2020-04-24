@@ -23,17 +23,19 @@
   box-sizing: border-box;
   display: flex;
   justify-content: space-around;
-border-bottom: 2px solid rgba(221, 220, 220,.4);
+  border-bottom: 2px solid rgba(221, 220, 220, 0.4);
   a {
     font-weight: bold;
     color: #2c3e50;
     text-decoration: none;
-    padding: 5px;
-
+    display: block;
+    height: 34px;
+    line-height: 34px;
+    box-sizing: border-box;
+    padding: 0 5px;
 
     &.router-link-exact-active {
       color: @red;
-    box-sizing: border-box;
       border-bottom: 2px solid @red;
     }
   }

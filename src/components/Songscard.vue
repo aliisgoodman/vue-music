@@ -4,8 +4,11 @@
     <a v-for="(songscard, index) in songscards" :key="index">
       <div>
         <img :src="songscard.picUrl" />
-        
-        <span><i class="fa fa-headphones"></i>{{songscard.playCount/10000}}万</span>
+
+        <span>
+          <i class="fa fa-headphones"></i>
+          {{songscard.playCount/10000}}万
+        </span>
       </div>
       <p>{{songscard.name}}</p>
     </a>
@@ -24,8 +27,7 @@ export default {
     this.axios
       .get("http://music.kele8.cn/personalized")
       .then(response => {
-        this.songscards = response.data.result.slice(0,6);
-        
+        this.songscards = response.data.result.slice(0, 6);
       })
       .catch(error => {
         console.log(error);
@@ -41,7 +43,7 @@ export default {
   flex-wrap: wrap;
   justify-content: space-between;
   a {
-        display: block;
+    display: block;
 
     width: 32%;
   }
@@ -60,13 +62,13 @@ export default {
   p {
     padding: 0 5px;
     margin: 5px 0 10px 0;
-      font-size: 14px;
-      line-height: 1.3em;
-      height: 2.6em;
-      overflow: hidden;
+    font-size: 14px;
+    line-height: 1.3em;
+    height: 2.6em;
+    overflow: hidden;
   }
-  i{
-      margin-right: 5px;
+  i {
+    margin-right: 5px;
   }
 }
 </style>
