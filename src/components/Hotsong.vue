@@ -20,12 +20,14 @@ export default {
     };
   },
 
-  beforeCreate() {
+  created() {
     // 做一个本地缓存数据，如果有就不用了再去请求拿数据了。
     let hotsongsStorage = JSON.parse(window.localStorage.getItem("hotsongs"));
+
     // 本地缓存存在而且过期时间大于当前时间，就使用本地缓存。
     if (hotsongsStorage && hotsongsStorage.time > new Date().getTime()) {
       this.hotsongs = hotsongsStorage.hotsongsdata;
+      console.log("xxxx");
     } else {
       this.axios
         .get("http://music.kele8.cn/personalized/newsong")
@@ -49,6 +51,14 @@ export default {
           console.log(error);
         });
     }
+    // this.axios
+    //   .get("http://music.kele8.cn/personalized/newsong")
+    //   .then(response => {
+    //     this.hotsongs = response.data.result;
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
   }
 };
 </script>
@@ -58,7 +68,6 @@ export default {
   a {
     display: flex;
     position: relative;
-
     justify-content: space-between;
     border-bottom: 1px solid #eee;
   }

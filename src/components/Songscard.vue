@@ -34,11 +34,11 @@ export default {
     }
   },
 
-  beforeCreate() {
+  created() {
     this.axios
       .get("http://music.kele8.cn/personalized")
       .then(response => {
-        this.songscards = response.data.result.slice(0, 6);
+        this.songscards = response.data.result.slice(1, 7);
       })
       .catch(error => {
         console.log(error);
