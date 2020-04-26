@@ -7,7 +7,7 @@
 
         <span>
           <i class="fa fa-headphones"></i>
-          {{songscard.playCount/10000}}万
+          {{ playCount(songscard.playCount)}}
         </span>
       </div>
       <p>{{songscard.name}}</p>
@@ -21,6 +21,17 @@ export default {
     return {
       songscards: []
     };
+  },
+  methods: {
+    playCount(num) {
+      if (num > 100000000) {
+        return (num / 100000000).toFixed(1) + "亿";
+      } if (num > 10000) {
+        return (num / 10000).toFixed(1) + "万";
+      } else {
+        return num;
+      }
+    }
   },
 
   beforeCreate() {

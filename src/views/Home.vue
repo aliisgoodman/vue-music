@@ -3,6 +3,7 @@
 <template>
   <div class="home">
     <!-- 歌单推荐 -->
+    <Nav></Nav>
     <div class="songslists">
      
         <HomeTitle>推荐歌单</HomeTitle>
@@ -24,18 +25,26 @@
 import HomeTitle from "@/components/HomeTitle.vue";
 import Songscard from "@/components/Songscard.vue";
 import Songlist from "@/components/Songlist.vue";
+import Nav from "@/components/Nav.vue";
+
 
 export default {
   name: "Home",
   components: {
     HomeTitle,
     Songscard,
-    Songlist
+    Songlist,
+    Nav
   }
 };
 </script>
 <style lang="less" scope>
 .home {
   margin: 10px 0;
+  .songslists{
+  margin-top: 10px;
+
+  }
 }
+
 </style>
