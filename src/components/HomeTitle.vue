@@ -8,7 +8,7 @@ export default {
     name:'HomeTitle'
 }
 </script>
-<style lang="less" scope>
+<style lang="less" scoped>
     .hometitle{
         border-left: 2px solid #d43c33;
         font-size: 14px;

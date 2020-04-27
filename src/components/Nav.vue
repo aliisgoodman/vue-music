@@ -14,7 +14,7 @@ export default {
 
 
 
-<style lang="less" scope>
+<style lang="less" scoped>
 @red: #d43c33;
 #nav {
   height: 34px;

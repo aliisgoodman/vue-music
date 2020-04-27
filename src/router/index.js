@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import HomeHot from "../views/HomeHot.vue";
 import HomeSearch from "../views/HomeSearch.vue";
+import Songsarddetails from "@/components/Songsarddetails.vue";
 
 Vue.use(VueRouter);
 
@@ -19,6 +20,10 @@ const routes = [
     path: "/homeSearch",
     name: "HomeSearch",
     component: HomeSearch
+  },{
+    path: "/songsarddetails",
+    name: "Songsarddetails",
+    component: Songsarddetails
   },
   // {
   //   path: "/about",

@@ -16,7 +16,7 @@ export default {
     },
 }
 </script>
-<style lang="less" scope>
+<style lang="less" scoped>
 .hotlogo{
     width: 100%;
     height: 140px;

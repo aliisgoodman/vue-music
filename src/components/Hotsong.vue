@@ -27,7 +27,7 @@ export default {
     // 本地缓存存在而且过期时间大于当前时间，就使用本地缓存。
     if (hotsongsStorage && hotsongsStorage.time > new Date().getTime()) {
       this.hotsongs = hotsongsStorage.hotsongsdata;
-      console.log("xxxx");
+
     } else {
       this.axios
         .get("http://music.kele8.cn/personalized/newsong")
@@ -62,7 +62,7 @@ export default {
   }
 };
 </script>
-<style lang="less" scope>
+<style lang="less" scoped>
 .hotsong {
   margin: 10px;
   a {

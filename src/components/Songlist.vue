@@ -33,7 +33,7 @@ export default {
 };
 </script>
 
-<style lang="less" scope>
+<style lang="less" scoped>
 .songlist {
     margin: 10px;
   a {
