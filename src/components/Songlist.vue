@@ -5,7 +5,7 @@
       <li
         v-for="(newsonglist, index) in newsonglists"
         :key="index"
-        @click="getsongurl(newsonglist.id)"
+        @click="getsongurl(newsonglist)"
       >
         <div>
           <h3>{{newsonglist.name}} {{newsonglist.song.alias[0]}}</h3>
@@ -94,7 +94,7 @@ export default {
         border-bottom: 1px solid lightgrey;
         padding-bottom: 5px;
         h3 {
-          width: 290px;
+          width: 280px;
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;
@@ -113,7 +113,7 @@ export default {
           }
         }
       }
-      p{
+      &>p{
         display: flex;
         align-items: center;
         padding: 0 10px;

@@ -41,16 +41,16 @@
       <div class="bottom">
         <p>歌曲列表</p>
         <ul>
-          <li v-for="(track, index) in playlists.tracks" :key="index" @click="getsongurl(track.id)">
+          <li v-for="(track, index) in playlists.tracks" :key="index" @click="getsongurl(track)">
             <span>{{index+1}}</span>
-            <div >
+            <div>
               <h3>{{track.name}} {{track.alia[0]}}</h3>
 
               <p>{{track.ar[0].name}}-{{track.al.name}}</p>
             </div>
-            <a>
-              <i class="fa fa-play-circle-o"></i>
-            </a>
+            <p>
+              <a></a>
+            </p>
           </li>
         </ul>
       </div>
@@ -246,8 +246,8 @@ export default {
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
-      border-bottom: 1px solid lightgrey;
-      padding-bottom: 5px;
+        border-bottom: 1px solid lightgrey;
+        padding-bottom: 5px;
         h3 {
           font-size: 18px;
           margin-bottom: 3px;
@@ -257,13 +257,18 @@ export default {
           color: gray;
         }
       }
-      a {
+       &>p{
         display: flex;
         align-items: center;
-        font-size: 20px;
-        margin-right: 10px;
         padding: 0 10px;
-        color: lightslategrey;
+        a {
+        display: inline-block;
+        width: 22px;
+        height: 22px;
+        background: url('../assets/index_icon_2x.png');
+        background-position: -24px 0;
+        background-size: 166px 97px;
+      }
       }
     }
   }
