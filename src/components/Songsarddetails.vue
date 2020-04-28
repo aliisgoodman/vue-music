@@ -1,55 +1,61 @@
 //  歌单推荐  歌单推荐的详情
   <template >
   <div>
-    <div class="songsarddetails">
-      <b :style="{background:`url(${playlists.coverImgUrl})`}"></b>
-      <ul>
-        <li>
-          <img :src="playlists.coverImgUrl" />
-          <div>
-            <p>
-              <i class="fa fa-headphones"></i>
-              {{playCount(playlists.playCount)}}
-            </p>
-            <span>歌单</span>
-          </div>
-        </li>
-        <li>
-          <h3>{{playlists.name}}</h3>
-          <img :src="playlists.creator.avatarUrl" alt />
-          <a>{{playlists.creator.nickname}}</a>
-        </li>
-      </ul>
+    <div class="mask" v-show="playlists==null">
+      <img src="../assets/loading.svg" />
     </div>
-
-    <div class="middle">
-      <p>
-        标签：
-        <span v-for="(tag, index) in playlists.tags" :key="index">{{tag}}</span>
-      </p>
-      <div :class="{active:show}">简介：{{playlists.description}}</div>
-      <a @click="show=!show">
-        <i class="fa fa-sort-asc" v-if="show"></i>
-        <i class="fa fa-sort-desc" v-else></i>
-      </a>
-    </div>
-
-    <div class="bottom">
-      <p>歌曲列表</p>
-      <ul>
-        <li v-for="(track, index) in playlists.tracks" :key="index">
-          <span>{{index}}</span>
-          <div class="div1">
+    <div v-if="playlists!=null">
+      <div class="songsarddetails">
+        <b :style="{background:`url(${playlists.coverImgUrl})`}"></b>
+        <ul>
+          <li>
+            <img :src="playlists.coverImgUrl" />
             <div>
-              <h3>{{track.name}} {{track.alia[0]}}</h3>
+              <p>
+                <i class="fa fa-headphones"></i>
+                {{playCount(playlists.playCount)}}
+              </p>
+              <span>歌单</span>
             </div>
-            <p>{{track.ar[0].name}}-{{track.al.name}}</p>
-          </div>
-          <a>
-            <i class="fa fa-play-circle-o"></i>
-          </a>
-        </li>
-      </ul>
+          </li>
+          <li>
+            <h3>{{playlists.name}}</h3>
+            <img :src="playlists.creator.avatarUrl" alt />
+            <a>{{playlists.creator.nickname}}</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="middle">
+        <p>
+          标签：
+          <span v-for="(tag, index) in playlists.tags" :key="index">{{tag}}</span>
+        </p>
+        <div :class="{active:show}">简介：{{playlists.description}}</div>
+        <a @click="show=!show">
+          <i class="fa fa-sort-asc" v-if="show"></i>
+          <i class="fa fa-sort-desc" v-else></i>
+        </a>
+      </div>
+
+      <div class="bottom">
+        <p>歌曲列表</p>
+        <ul>
+          <li v-for="(track, index) in playlists.tracks" :key="index">
+            <span>{{index}}</span>
+            <div class="div1">
+              <div>
+                <h3>{{track.name}} {{track.alia[0]}}</h3>
+              </div>
+              <p>{{track.ar[0].name}}-{{track.al.name}}</p>
+            </div>
+            <a>
+              <i class="fa fa-play-circle-o"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      
     </div>
   </div>
 </template>
@@ -66,6 +72,7 @@ export default {
       playlists: null
     };
   },
+
   methods: {
     playCount(num) {
       if (num > 100000000) {
@@ -79,39 +86,52 @@ export default {
     }
   },
   created() {
-    //     let songsStorage = JSON.parse(window.localStorage.getItem("songscards"));
-    // if (songsStorage && songsStorage.time > new Date().getTime()) {
-    //   let a = window.Math.floor(
-    //     window.Math.random() * (songsStorage.songscardsdata.length - 6)
-    //   );
-    //   this.songscards = songsStorage.songscardsdata.slice(a, a + 6);
-    // } else {
-    this.axios
-      .get(`https://music.kele8.cn/playlist/detail?id=${this.id}`)
-      .then(response => {
-        console.log(response.data.playlist);
-        //   h3==name     img==coverImgUrl    span==creator.avatarUrl   a==creator.nickname
-        this.playlists = response.data.playlist;
+    let songscardStorage = JSON.parse(
+      window.localStorage.getItem("songscard-" + this.id)
+    );
+    if (songscardStorage && songscardStorage.time > new Date().getTime()) {
+      this.playlists = songscardStorage.songscardsdata;
+    } else {
+      this.axios
+        .get(`https://music.kele8.cn/playlist/detail?id=${this.id}`)
+        .then(response => {
+          //   h3==name     img==coverImgUrl    span==creator.avatarUrl   a==creator.nickname
 
-        // window.localStorage.setItem(
-        //   "songscards",
-        //   JSON.stringify({
-        //     time: new Date().getTime() + 1 * 60 * 60 * 1000,
-        //     songscardsdata: response.data.result
-        //   })
-        // );
-        // this.songscards = JSON.parse(
-        //   window.localStorage.getItem("songscards")
-        // ).songscardsdata.slice(1, 7);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    // }
+          window.localStorage.setItem(
+            "songscard-" + this.id,
+            JSON.stringify({
+              time: new Date().getTime() + 1 * 60 * 60 * 1000,
+              songscardsdata: response.data.playlist
+            })
+          );
+          this.playlists = JSON.parse(
+            window.localStorage.getItem("songscard-" + this.id)
+          ).songscardsdata;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
   }
 };
 </script>
 <style lang="less" scoped>
+.mask {
+  width: 100%;
+  height: 100vh;
+  background: #fff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img{
+    width: 100px;
+  }
+}
+
 .songsarddetails {
   color: white;
   padding: 25px 15px;
@@ -204,7 +224,7 @@ export default {
 }
 
 .bottom {
-  &>p{
+  & > p {
     padding: 3px 0 3px 15px;
     background: #eee;
     font-size: 14px;

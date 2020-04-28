@@ -22,6 +22,7 @@ export default {
       songscards: []
     };
   },
+  
 
   methods: {
     playCount(num) {
@@ -35,7 +36,7 @@ export default {
       }
     },
     handle(id) {
-      this.$router.push({ path: "/songsarddetails",query: { id: id }});
+      this.$router.push({ path: "/songsarddetails", query: { id: id } });
     }
   },
 
@@ -47,7 +48,6 @@ export default {
       // );
       // this.songscards = songsStorage.songscardsdata.slice(a, a + 6);
       this.songscards = songsStorage.songscardsdata.slice(1, 7);
-
     } else {
       this.axios
         .get("http://music.kele8.cn/personalized")
