@@ -1,4 +1,4 @@
-// 热歌榜    头部
+<!--热歌榜    头部-->
 <template>
     <div class="hotlogo">
         <div></div>

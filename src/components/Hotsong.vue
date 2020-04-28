@@ -1,4 +1,4 @@
-// 热歌榜     热歌歌曲列表
+<!--// 热歌榜     热歌歌曲列表-->
 <template>
   <div class="hotsong">
     <a v-for="(hotsong, index) in hotsongs" :key="index">

@@ -1,4 +1,4 @@
-//  歌单推荐  歌单推荐的详情
+<!-- 歌单推荐  歌单推荐的详情 -->
   <template >
   <div>
     <div class="mask" v-show="playlists==null">
@@ -41,12 +41,11 @@
       <div class="bottom">
         <p>歌曲列表</p>
         <ul>
-          <li v-for="(track, index) in playlists.tracks" :key="index">
-            <span>{{index}}</span>
-            <div class="div1">
-              <div>
-                <h3>{{track.name}} {{track.alia[0]}}</h3>
-              </div>
+          <li v-for="(track, index) in playlists.tracks" :key="index" @click="getsongurl(track.id)">
+            <span>{{index+1}}</span>
+            <div >
+              <h3>{{track.name}} {{track.alia[0]}}</h3>
+
               <p>{{track.ar[0].name}}-{{track.al.name}}</p>
             </div>
             <a>
@@ -55,14 +54,13 @@
           </li>
         </ul>
       </div>
-      
     </div>
   </div>
 </template>
 
 <script>
 // playlists.description  简介   tags 标签
-// tracks 歌曲  ar[0].name歌手，  .name歌曲名，  al.name专辑。
+// tracks 歌曲  ar[0].name歌手，  .name歌曲名，  al.name专辑。.id歌曲id
 export default {
   name: "Songsarddetails",
   data() {
@@ -74,6 +72,9 @@ export default {
   },
 
   methods: {
+    getsongurl(id) {
+      this.$parent.songid = id;
+    },
     playCount(num) {
       if (num > 100000000) {
         return (num / 100000000).toFixed(1) + "亿";
@@ -123,11 +124,11 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 2;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  img{
+  img {
     width: 100px;
   }
 }
@@ -210,8 +211,8 @@ export default {
   div {
     white-space: pre-wrap;
     font-size: 14px;
-    line-height: 1.2em;
-    height: 3.6em;
+    line-height: 1.3em;
+    height: 3.9em;
     overflow: hidden;
     &.active {
       height: auto;
@@ -232,20 +233,24 @@ export default {
   ul {
     li {
       display: flex;
-      margin: 10px 0;
+      margin: 12px 0;
       span {
         display: flex;
         align-items: center;
         text-align: center;
         padding: 0 15px;
+        color: lightslategray;
       }
-      .div1 {
+      div {
         flex: 1;
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
+      border-bottom: 1px solid lightgrey;
+      padding-bottom: 5px;
         h3 {
           font-size: 18px;
+          margin-bottom: 3px;
         }
         p {
           font-size: 12px;
@@ -258,6 +263,7 @@ export default {
         font-size: 20px;
         margin-right: 10px;
         padding: 0 10px;
+        color: lightslategrey;
       }
     }
   }

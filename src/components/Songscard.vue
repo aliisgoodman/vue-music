@@ -1,4 +1,4 @@
-//  每日推荐版块  每日歌单推荐模板
+<!--//  每日推荐版块  每日歌单推荐模板-->
 <template>
   <div class="songcard">
     <a v-for="(songscard, index) in songscards" :key="index" @click="handle(songscard.id)">

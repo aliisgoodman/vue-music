@@ -16,11 +16,11 @@ const routes = [
     path: "/homeHot",
     name: "HomeHot",
     component: HomeHot
-  },{
+  }, {
     path: "/homeSearch",
     name: "HomeSearch",
     component: HomeSearch
-  },{
+  }, {
     path: "/songsarddetails",
     name: "Songsarddetails",
     component: Songsarddetails

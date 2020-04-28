@@ -1,4 +1,4 @@
-// 热歌榜   
+<!--// 热歌榜 -->  
 <template>
   <div class="homehot">
     <Nav></Nav>

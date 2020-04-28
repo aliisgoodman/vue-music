@@ -1,4 +1,4 @@
-// 每日推荐版块
+<!--每日推荐版块--> 
 
 <template>
   <div class="home">
