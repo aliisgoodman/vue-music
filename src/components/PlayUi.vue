@@ -1,12 +1,12 @@
 <template>
-  <div >
+  <div>
     <div class="playui">
       <img :src="title.picUrl" />
       <h3>{{title.name}}</h3>
-      <div>
+      <div @click="showi=!showi">
         <canvas width="40" height="40" id="canvas"></canvas>
-        <i class="fa fa-play" v-if="showi"></i>
-        <i class="fa fa-pause" v-else></i>
+        <i class="fa fa-pause" v-if="showi"></i>
+        <i class="fa fa-play" v-else></i>
       </div>
       <p>列表</p>
     </div>
@@ -18,9 +18,9 @@
 export default {
   name: "PlayUi",
   data() {
-      return {
-          showi:false
-      }
+    return {
+      showi: true
+    };
   },
   props: ["title"],
   computed: {
@@ -28,11 +28,53 @@ export default {
       return `https://music.163.com/song/media/outer/url?id=${this.title.id}.mp3`;
     }
   },
-  mounted() {
-      console.log(this.$el);
-      
+  watch: {
+    showi(a) {
+      // let audio = this.$el.querySelector("audio");
+      let audio = this.$el.getElementsByTagName("audio")[0];
+
+      if (a) {
+        audio.play();
+        console.log("xxx");
+      } else {
+        console.log("bbbbb");
+        audio.pause();
+      }
+    }
   },
-  
+  mounted() {
+    /** @type {HTMLCanvasElement} */
+    // let contt=this.$el.getElementById("canvas")  报错，getElementById('canvas') is not a function
+
+    let a = this.$el.querySelector("#canvas"); //这个可以
+    let context = a.getContext("2d");
+    let audio = this.$el.querySelector("audio");
+    // context.beginPath();
+    // context.strokeStyle = "gray";
+    // context.arc(20, 20, 18, 0, 2 * Math.PI);
+    // context.stroke();
+    // context.closePath();
+    audio.ontimeupdate = function() {
+      context.clearRect(0, 0, 40, 40);
+      context.beginPath();
+      context.strokeStyle = "gray";
+      context.arc(20, 20, 18, 0, 2 * Math.PI);
+      context.stroke();
+      context.closePath();
+      // currentTime   duration
+      // 画圆
+      context.beginPath();
+      context.strokeStyle = "#d43c33";
+      context.arc(
+        20,
+        20,
+        18,
+        -0.5 * Math.PI,
+        -0.5 * Math.PI + 2 * Math.PI * (this.currentTime / this.duration)
+      );
+      context.stroke();
+    };
+  }
 };
 </script>
 <style lang="less" scoped>
@@ -41,7 +83,7 @@ export default {
   width: 100%;
   padding: 10px;
   align-items: center;
-  background-color: lightgreen;
+  background-color: lightyellow;
   position: fixed;
   bottom: 60px;
   left: 0;
