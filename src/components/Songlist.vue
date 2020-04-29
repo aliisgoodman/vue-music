@@ -94,7 +94,7 @@ export default {
         border-bottom: 1px solid lightgrey;
         padding-bottom: 5px;
         h3 {
-          width: 280px;
+          width: 260px;
           text-overflow: ellipsis;
           overflow: hidden;
           white-space: nowrap;

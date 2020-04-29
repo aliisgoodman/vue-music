@@ -180,6 +180,7 @@ export default {
       flex: 6;
       padding-left: 15px;
       h3 {
+        
         font-size: 16px;
         margin: 20px 0 25px 0;
       }
@@ -243,12 +244,14 @@ export default {
       }
       div {
         flex: 1;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
+        
         border-bottom: 1px solid lightgrey;
         padding-bottom: 5px;
         h3 {
+          text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+          width: 260px;
           font-size: 18px;
           margin-bottom: 3px;
         }

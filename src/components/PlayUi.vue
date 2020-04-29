@@ -1,16 +1,46 @@
 <template>
   <div>
-    <div class="playui">
-      <img :src="title.picUrl" />
+    <div class="playui"  @click="showbigplay=!showbigplay">
+      <img :src="title.picUrl" :class="{active:showplay}" />
       <h3>{{title.name}}</h3>
-      <div @click="showi=!showi">
+      <div @click.stop="showplay=!showplay">
         <canvas width="40" height="40" id="canvas"></canvas>
-        <i class="fa fa-pause" v-if="showi"></i>
+        <i class="fa fa-pause" v-if="showplay"></i>
         <i class="fa fa-play" v-else></i>
       </div>
       <p>列表</p>
     </div>
-    <audio :src="songurlid" style="height:60px;width:100%" controls v-if="title!=null" autoplay></audio>
+
+    <div class="bigplayui" v-show="showbigplay">
+      <div class="mask" :style="{background:`url(${title.picUrl})`}"></div>
+      <p >
+        <i class="fa fa-hand-o-left" @click="showbigplay=!showbigplay"></i>
+      </p>
+      <div>
+        <span></span>
+        <div :class="{active:showbigplay}">
+          <img :src="title.picUrl" />
+        </div>
+      </div>
+
+      <div>
+        <ul><li>xxx</li>
+        <li>xxx</li>
+        <li>xxx</li>
+        <li>xxx</li></ul>
+        <div>
+        <input type="range" min="0" max="100">
+        <p><a>aaaaaaa</a></p>
+        </div>
+        <ol>
+        <li>yyyy</li>
+        <li>yyyy</li>
+        <li>yyyyy</li>
+        </ol>
+      </div>
+    </div>
+
+    <audio :src="songurlid" autoplay></audio>
   </div>
 </template>
 
@@ -19,7 +49,8 @@ export default {
   name: "PlayUi",
   data() {
     return {
-      showi: true
+      showplay: true,
+      showbigplay: false
     };
   },
   props: ["title"],
@@ -28,16 +59,15 @@ export default {
       return `https://music.163.com/song/media/outer/url?id=${this.title.id}.mp3`;
     }
   },
+
   watch: {
-    showi(a) {
+    showplay(showplay) {
       // let audio = this.$el.querySelector("audio");
       let audio = this.$el.getElementsByTagName("audio")[0];
 
-      if (a) {
+      if (showplay) {
         audio.play();
-        console.log("xxx");
       } else {
-        console.log("bbbbb");
         audio.pause();
       }
     }
@@ -78,6 +108,122 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.bigplayui {
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  .mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-size: 100%;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+    transform: scale(2);
+    z-index: -1;
+    filter: blur(15px) brightness(0.8);
+  }
+  div:nth-of-type(2) {
+    flex: 1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    span {
+      background: url("../assets/needle-ip6.png");
+      background-size: 100%;
+      background-repeat: no-repeat;
+      position: absolute;
+      z-index: 1;
+      top: 0;
+      left: 50%;
+      display: block;
+      width: 80px;
+      height: 150px;
+      transform: rotate(0deg);
+      transform-origin: 0 0;
+      transition: all 0.3s;
+      &.active {
+        transform: rotate(-20deg);
+      }
+    }
+    div {
+      background: url("../assets/disc_light-ip6.png"),
+        url("../assets/disc_default.png");
+      background-size: 100%;
+      width: 296px;
+      height: 296px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: rotate 8s linear infinite;
+      animation-play-state: running;
+      &.active {
+        animation-play-state: paused;
+      }
+      img {
+        width: 186px;
+        height: 186px;
+        vertical-align: middle;
+        border-radius: 50%;
+      }
+    }
+  }
+  div:nth-of-type(3) {
+    height: 200px;
+    background: lightgreen;
+    ul{
+      display: flex;
+      justify-content: space-between;
+      li{
+
+      }
+    }
+    div{
+      input{
+
+      }
+      p{
+        a{
+
+        }
+      }
+    }
+    ol{
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      li{
+
+      }
+    }
+  }
+  p {
+    font-size: 24px;
+    height: 1.5em;
+    line-height: 1.5em;
+    i {
+      color: lightsalmon;
+      margin-left: 10px;
+    }
+  }
+}
+
 .playui {
   display: flex;
   width: 100%;
@@ -85,11 +231,17 @@ export default {
   align-items: center;
   background-color: lightyellow;
   position: fixed;
-  bottom: 60px;
+  bottom: 0;
   left: 0;
   img {
     width: 40px;
     height: 40px;
+    border-radius: 50px;
+    animation: rotate 8s linear infinite;
+    animation-play-state: paused;
+    &.active {
+      animation-play-state: running;
+    }
   }
   h3 {
     flex: 1;
