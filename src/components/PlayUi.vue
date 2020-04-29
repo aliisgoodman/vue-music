@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="playui"  @click="showbigplay=!showbigplay">
+    <div class="playui" @click="showbigplay=!showbigplay">
       <img :src="title.picUrl" :class="{active:showplay}" />
       <h3>{{title.name}}</h3>
       <div @click.stop="showplay=!showplay">
@@ -10,36 +10,58 @@
       </div>
       <p>列表</p>
     </div>
-
-    <div class="bigplayui" v-show="showbigplay">
-      <div class="mask" :style="{background:`url(${title.picUrl})`}"></div>
-      <p >
-        <i class="fa fa-hand-o-left" @click="showbigplay=!showbigplay"></i>
-      </p>
-      <div>
-        <span></span>
-        <div :class="{active:showbigplay}">
-          <img :src="title.picUrl" />
-        </div>
-      </div>
-
-      <div>
-        <ul><li>xxx</li>
-        <li>xxx</li>
-        <li>xxx</li>
-        <li>xxx</li></ul>
+    <transition name="fade">
+      <div class="bigplayui" v-if="showbigplay">
+        <div class="mask" :style="{background:`url(${title.picUrl})`}"></div>
+        <p>
+          <i class="fa fa-hand-o-left" @click="showbigplay=!showbigplay"></i>
+        </p>
         <div>
-        <input type="range" min="0" max="100">
-        <p><a>aaaaaaa</a></p>
+          <span :class="{active:!showplay}"></span>
+          <div :class="{active:!showplay}">
+            <img :src="title.picUrl" />
+          </div>
         </div>
-        <ol>
-        <li>yyyy</li>
-        <li>yyyy</li>
-        <li>yyyyy</li>
-        </ol>
-      </div>
-    </div>
 
+        <div>
+          <ul>
+            <li>
+              <i class="fa fa-heart"></i>
+            </li>
+            <li>
+              <i class="fa fa-arrow-circle-down"></i>
+            </li>
+            <li>
+              <i class="fa fa-comments-o"></i>
+            </li>
+            <li>
+              <i class="fa fa-info-circle"></i>
+            </li>
+          </ul>
+          <div>
+            <span>{{durationgo}}</span>
+            <p>
+              <input type="range" min="0" max="100" value="0" v-model="number" />
+              <a :style="{left:`${anumber}px`}"></a>
+              <a :style="{width:`${anumber}px`}"></a>
+            </p>
+            <span>{{durationend}}</span>
+          </div>
+          <ol>
+            <li>
+              <i class="fa fa-step-backward"></i>
+            </li>
+            <li @click="showplay=!showplay">
+              <i class="fa fa-play-circle-o" v-show="showplay"></i>
+              <i class="fa fa-pause-circle-o" v-show="!showplay"></i>
+            </li>
+            <li>
+              <i class="fa fa-step-forward"></i>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </transition>
     <audio :src="songurlid" autoplay></audio>
   </div>
 </template>
@@ -50,17 +72,28 @@ export default {
   data() {
     return {
       showplay: true,
-      showbigplay: false
+      showbigplay: false,
+      number: 0,
+      durationend: "00:00",
+      durationgo: "00:00"
     };
   },
   props: ["title"],
   computed: {
     songurlid() {
       return `https://music.163.com/song/media/outer/url?id=${this.title.id}.mp3`;
+    },
+    anumber() {
+      return this.number < 96 ? (this.number / 100) * 240 : 230;
     }
   },
 
   watch: {
+    title() {
+      if (this.showplay===false) {
+        this.showplay = !this.showplay;
+      }
+    },
     showplay(showplay) {
       // let audio = this.$el.querySelector("audio");
       let audio = this.$el.getElementsByTagName("audio")[0];
@@ -74,17 +107,27 @@ export default {
   },
   mounted() {
     /** @type {HTMLCanvasElement} */
-    // let contt=this.$el.getElementById("canvas")  报错，getElementById('canvas') is not a function
-
-    let a = this.$el.querySelector("#canvas"); //这个可以
+    let a = this.$el.querySelector("#canvas");
     let context = a.getContext("2d");
     let audio = this.$el.querySelector("audio");
-    // context.beginPath();
-    // context.strokeStyle = "gray";
-    // context.arc(20, 20, 18, 0, 2 * Math.PI);
-    // context.stroke();
-    // context.closePath();
-    audio.ontimeupdate = function() {
+
+    audio.ontimeupdate = () => {
+      this.durationend =
+        (Math.floor(audio.duration / 60) < 10
+          ? "0" + Math.floor(audio.duration / 60)
+          : Math.floor(audio.duration / 60)) +
+        ":" +
+        Math.floor(audio.duration % 60);
+
+      this.durationgo =
+        (Math.floor(audio.currentTime / 60) < 10
+          ? "0" + Math.floor(audio.currentTime / 60)
+          : Math.floor(audio.currentTime / 60)) +
+        ":" +
+        (Math.floor(audio.currentTime % 60) < 10
+          ? "0" + Math.floor(audio.currentTime % 60)
+          : Math.floor(audio.currentTime % 60));
+
       context.clearRect(0, 0, 40, 40);
       context.beginPath();
       context.strokeStyle = "gray";
@@ -100,7 +143,7 @@ export default {
         20,
         18,
         -0.5 * Math.PI,
-        -0.5 * Math.PI + 2 * Math.PI * (this.currentTime / this.duration)
+        -0.5 * Math.PI + 2 * Math.PI * (audio.currentTime / audio.duration)
       );
       context.stroke();
     };
@@ -115,6 +158,14 @@ export default {
   to {
     transform: rotate(360deg);
   }
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 .bigplayui {
   height: 100vh;
@@ -133,9 +184,9 @@ export default {
     background-position: center;
     height: 100%;
     width: 100%;
-    transform: scale(2);
+    transform: scale(1.2);
     z-index: -1;
-    filter: blur(15px) brightness(0.8);
+    filter: blur(15px) brightness(0.9);
   }
   div:nth-of-type(2) {
     flex: 1;
@@ -186,30 +237,73 @@ export default {
   }
   div:nth-of-type(3) {
     height: 200px;
-    background: lightgreen;
-    ul{
+    color: aliceblue;
+    display: flex;
+    flex-direction: column;
+    ul {
+      flex: 2;
       display: flex;
-      justify-content: space-between;
-      li{
-
+      justify-content: space-around;
+      align-items: center;
+      li {
+        font-size: 24px;
       }
     }
-    div{
-      input{
-
+    div {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      span {
+        padding: 5px 10px;
       }
-      p{
-        a{
-
+      p {
+        flex: 1;
+        height: 3px;
+        background: #ccc;
+        position: relative;
+        input {
+          width: 100%;
+          position: absolute;
+          top: -5px;
+          left: 0;
+          z-index: 2;
+        }
+        a {
+          position: absolute;
+          display: block;
+          top: 0;
+          left: 0;
+          &:nth-of-type(1) {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #fff;
+            z-index: 1;
+            top: -4px;
+          }
+          &:nth-of-type(2) {
+            z-index: 0;
+            width: 50%;
+            height: 100%;
+            background: #fff;
+          }
         }
       }
     }
-    ol{
+    ol {
+      flex: 2;
       list-style: none;
       display: flex;
-      justify-content: space-between;
-      li{
-
+      justify-content: space-around;
+      align-items: center;
+      margin-bottom: 10px;
+      padding: 0 50px;
+      box-sizing: border-box;
+      li {
+        font-size: 22px;
+        &:nth-child(2) {
+          font-size: 42px;
+        }
       }
     }
   }
@@ -218,7 +312,7 @@ export default {
     height: 1.5em;
     line-height: 1.5em;
     i {
-      color: lightsalmon;
+      color: #d43c33;
       margin-left: 10px;
     }
   }
@@ -233,6 +327,7 @@ export default {
   position: fixed;
   bottom: 0;
   left: 0;
+
   img {
     width: 40px;
     height: 40px;
