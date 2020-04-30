@@ -1,5 +1,7 @@
+<!-- 播放器底部边栏    歌词显示界面   -->
 <template>
   <div>
+    <!-- 播放器底部边栏     -->
     <div class="playui" @click="showbigplay=!showbigplay">
       <img :src="title.picUrl" :class="{active:showplay}" />
       <h3>{{title.name}}</h3>
@@ -10,19 +12,23 @@
       </div>
       <p>列表</p>
     </div>
+    <!-- 黑胶 和 歌词显示界面   -->
+
     <transition name="fade">
       <div class="bigplayui" v-if="showbigplay">
         <div class="mask" :style="{background:`url(${title.picUrl})`}"></div>
+        <!-- 返回 -->
         <p>
           <i class="fa fa-hand-o-left" @click="showbigplay=!showbigplay"></i>
         </p>
+        <!-- 黑胶和歌词 -->
         <div>
           <span :class="{active:!showplay}"></span>
           <div :class="{active:!showplay}">
             <img :src="title.picUrl" />
           </div>
         </div>
-
+        <!-- 收藏，进度条，切换歌曲 -->
         <div>
           <ul>
             <li>
@@ -90,7 +96,7 @@ export default {
 
   watch: {
     title() {
-      if (this.showplay===false) {
+      if (this.showplay === false) {
         this.showplay = !this.showplay;
       }
     },
